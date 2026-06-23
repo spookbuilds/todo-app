@@ -1,11 +1,14 @@
 const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
+const totalTasksText = document.getElementById("totalTasks");
+const completedTasksText = document.getElementById("completedTasks");
+const remainingTasksText = document.getElementById("remainingTasks");
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 renderTasks();
-updateStats();
+  updateStats();
 
 function updateStats() {
 

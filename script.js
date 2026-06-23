@@ -5,6 +5,21 @@ const taskList = document.getElementById("taskList");
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 renderTasks();
+updateStats();
+
+function updateStats() {
+
+  const total = tasks.length;
+
+  const completed = tasks.filter(task => task.completed).length;
+
+  const remaining = total - completed;
+
+  totalTasksText.textContent = total;
+  completedTasksText.textContent = completed;
+  remainingTasksText.textContent = remaining;
+
+}
 
 addBtn.addEventListener("click", function () {
   const taskText = taskInput.value;

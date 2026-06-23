@@ -1,37 +1,30 @@
-const dueDateInput = document.getElementById("dueDate");
-const prioritySelect = document.getElementById("prioritySelect");
-const searchInput = document.getElementById("searchInput");
 const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
+const searchInput = document.getElementById("searchInput");
+const prioritySelect = document.getElementById("prioritySelect");
+const dueDateInput = document.getElementById("dueDate");
+
 const totalTasksText = document.getElementById("totalTasks");
 const completedTasksText = document.getElementById("completedTasks");
 const remainingTasksText = document.getElementById("remainingTasks");
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
+
 tasks = tasks.map(task => {
   if (typeof task === "string") {
-    return { text: task, completed: false };
+    return {
+      text: task,
+      completed: false,
+      priority: "Medium",
+      dueDate: ""
+    };
   }
   return task;
 });
 
 renderTasks();
-
-function updateStats() {
-
-  const total = tasks.length;
-
-  const completed = tasks.filter(task => task.completed === true).length;
-
-  const remaining = total - completed;
-
-  totalTasksText.textContent = total;
-  completedTasksText.textContent = completed;
-  remainingTasksText.textContent = remaining;
-
-}
 
 addBtn.addEventListener("click", function () {
   const taskText = taskInput.value;
@@ -39,17 +32,16 @@ addBtn.addEventListener("click", function () {
   if (taskText === "") return;
 
   tasks.push({
-  text: taskText,
-  completed: false,
-  priority: prioritySelect.value,
-  dueDate: dueDateInput.value
-});
-  
+    text: taskText,
+    completed: false,
+    priority: prioritySelect.value,
+    dueDate: dueDateInput.value
+  });
+
   taskInput.value = "";
+  dueDateInput.value = "";
 
   saveTasks();
-  taskInput.value = "";
-  searchInput.value = "";
   renderTasks();
 });
 
@@ -58,7 +50,6 @@ searchInput.addEventListener("input", function () {
 });
 
 function renderTasks() {
-
   const query = searchInput.value.toLowerCase();
 
   const filteredTasks = tasks.filter(task =>
@@ -67,23 +58,31 @@ function renderTasks() {
 
   taskList.innerHTML = "";
 
-  filteredTasks.forEach((task, index) => {
+  filteredTasks.forEach((task) => {
+    const realIndex = tasks.indexOf(task);
+
     const li = document.createElement("li");
 
     li.innerHTML = `
-  <span class="${task.completed ? "completed" : ""}">
-    ${task.text}
-  </span>
+      <div>
+        <span class="${task.completed ? "completed" : ""}">
+          ${task.text}
+        </span>
 
-  <span class="priority ${task.priority.toLowerCase()}">
-    ${task.priority}
-  </span>
+        <span class="priority ${task.priority.toLowerCase()}">
+          ${task.priority}
+        </span>
 
-  <div>
-    <button onclick="toggleTask(${index})">✓</button>
-    <button onclick="deleteTask(${index})">X</button>
-  </div>
-`;
+        <p class="due-date">
+          ${task.dueDate ? "Due: " + task.dueDate : "No due date"}
+        </p>
+      </div>
+
+      <div>
+        <button onclick="toggleTask(${realIndex})">✓</button>
+        <button onclick="deleteTask(${realIndex})">X</button>
+      </div>
+    `;
 
     taskList.appendChild(li);
   });
@@ -91,38 +90,26 @@ function renderTasks() {
   updateStats();
 }
 
-function deleteTask(index) {
-  const query = searchInput.value.toLowerCase();
-
-  const filteredTasks = tasks.filter(task =>
-    task.text.toLowerCase().includes(query)
-  );
-
-  const taskToDelete = filteredTasks[index];
-
-  const realIndex = tasks.indexOf(taskToDelete);
-
-  tasks.splice(realIndex, 1);
-
+function toggleTask(index) {
+  tasks[index].completed = !tasks[index].completed;
   saveTasks();
   renderTasks();
 }
 
-function toggleTask(index) {
-  const query = searchInput.value.toLowerCase();
-
-  const filteredTasks = tasks.filter(task =>
-    task.text.toLowerCase().includes(query)
-  );
-
-  const taskToToggle = filteredTasks[index];
-
-  const realIndex = tasks.indexOf(taskToToggle);
-
-  tasks[realIndex].completed = !tasks[realIndex].completed;
-
+function deleteTask(index) {
+  tasks.splice(index, 1);
   saveTasks();
   renderTasks();
+}
+
+function updateStats() {
+  const total = tasks.length;
+  const completed = tasks.filter(t => t.completed).length;
+  const remaining = total - completed;
+
+  totalTasksText.textContent = total;
+  completedTasksText.textContent = completed;
+  remainingTasksText.textContent = remaining;
 }
 
 function saveTasks() {

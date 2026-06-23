@@ -1,30 +1,24 @@
 body {
   font-family: Arial;
-  text-align: center;
   background: #0f0f14;
   color: white;
-  margin-top: 80px;
+  text-align: center;
+  margin-top: 50px;
 }
 
 .container {
-  max-width: 400px;
+  max-width: 500px;
   margin: auto;
 }
 
-input {
+input, select, button {
   padding: 10px;
-  width: 70%;
-}
-
-button {
-  padding: 10px;
-  cursor: pointer;
+  margin: 5px;
 }
 
 ul {
   list-style: none;
   padding: 0;
-  margin-top: 20px;
 }
 
 li {
@@ -33,34 +27,24 @@ li {
   padding: 10px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .completed {
-    text-decoration: line-through;
-    opacity: 0.5;
+  text-decoration: line-through;
+  opacity: 0.5;
 }
 
 .priority {
-  margin-left: 10px;
   font-size: 12px;
   padding: 3px 6px;
   border-radius: 5px;
+  margin-left: 10px;
 }
 
-.priority.high {
-  background: #ff4d4d;
-  color: white;
-}
-
-.priority.medium {
-  background: #ffcc00;
-  color: black;
-}
-
-.priority.low {
-  background: #4caf50;
-  color: white;
-}
+.priority.high { background: #ff4d4d; }
+.priority.medium { background: #ffcc00; color: black; }
+.priority.low { background: #4caf50; }
 
 .due-date {
   font-size: 12px;

@@ -42,7 +42,3 @@ function deleteTask(index) {
 function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
-function deleteTask(index) {
-  tasks.splice(index, 1);
-  renderTasks();
-}

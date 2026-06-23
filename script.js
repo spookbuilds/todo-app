@@ -1,3 +1,4 @@
+const searchInput = document.getElementById("searchInput");
 const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
@@ -6,6 +7,8 @@ const completedTasksText = document.getElementById("completedTasks");
 const remainingTasksText = document.getElementById("remainingTasks");
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+let filteredTasks = tasks;
 
 tasks = tasks.map(task => {
   if (typeof task === "string") {
@@ -46,22 +49,32 @@ addBtn.addEventListener("click", function () {
   renderTasks();
 });
 
+searchInput.addEventListener("input", function () {
+  const query = searchInput.value.toLowerCase();
+
+  filteredTasks = tasks.filter(task =>
+    task.text.toLowerCase().includes(query)
+  );
+
+  renderTasks();
+});
+
 function renderTasks() {
   taskList.innerHTML = "";
 
-  tasks.forEach((task, index) => {
+  filteredTasks.forEach((task, index) => {
     const li = document.createElement("li");
 
     li.innerHTML = `
-  <span class="${task.completed ? "completed" : ""}">
-    ${task.text}
-  </span>
+      <span class="${task.completed ? "completed" : ""}">
+        ${task.text}
+      </span>
 
-  <div>
-    <button onclick="toggleTask(${index})">✓</button>
-    <button onclick="deleteTask(${index})">X</button>
-  </div>
-`;
+      <div>
+        <button onclick="toggleTask(${index})">✓</button>
+        <button onclick="deleteTask(${index})">X</button>
+      </div>
+    `;
 
     taskList.appendChild(li);
   });
@@ -70,14 +83,26 @@ function renderTasks() {
 }
 
 function deleteTask(index) {
-  tasks.splice(index, 1);
+  const actualTask = filteredTasks[index];
+
+  tasks = tasks.filter(task => task !== actualTask);
+
   saveTasks();
+
+  filteredTasks = tasks;
+
   renderTasks();
 }
 
 function toggleTask(index) {
-  tasks[index].completed = !tasks[index].completed;
+  const actualTask = filteredTasks[index];
+
+  actualTask.completed = !actualTask.completed;
+
   saveTasks();
+
+  filteredTasks = tasks;
+
   renderTasks();
 }
 

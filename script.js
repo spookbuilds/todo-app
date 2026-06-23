@@ -2,7 +2,9 @@ const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
 
-let tasks = [];
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+renderTasks();
 
 addBtn.addEventListener("click", function () {
   const taskText = taskInput.value;
@@ -12,6 +14,7 @@ addBtn.addEventListener("click", function () {
   tasks.push(taskText);
   taskInput.value = "";
 
+  saveTasks();
   renderTasks();
 });
 
@@ -30,6 +33,15 @@ function renderTasks() {
   });
 }
 
+function deleteTask(index) {
+  tasks.splice(index, 1);
+  saveTasks();
+  renderTasks();
+}
+
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 function deleteTask(index) {
   tasks.splice(index, 1);
   renderTasks();

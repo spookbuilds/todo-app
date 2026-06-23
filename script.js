@@ -7,6 +7,13 @@ const remainingTasksText = document.getElementById("remainingTasks");
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
+tasks = tasks.map(task => {
+  if (typeof task === "string") {
+    return { text: task, completed: false };
+  }
+  return task;
+});
+
 renderTasks();
 
 
@@ -14,7 +21,7 @@ function updateStats() {
 
   const total = tasks.length;
 
-  const completed = tasks.filter(task => task.completed).length;
+  const completed = tasks.filter(task => task.completed === true).length;
 
   const remaining = total - completed;
 

@@ -1,3 +1,4 @@
+const dueDateInput = document.getElementById("dueDate");
 const prioritySelect = document.getElementById("prioritySelect");
 const searchInput = document.getElementById("searchInput");
 const taskInput = document.getElementById("taskInput");
@@ -17,6 +18,10 @@ tasks = tasks.map(task => {
 });
 
 renderTasks();
+
+<p class="due-date">
+  Due: ${task.dueDate ? task.dueDate : "No date"}
+</p>
 
 
 function updateStats() {
@@ -41,7 +46,8 @@ addBtn.addEventListener("click", function () {
   tasks.push({
   text: taskText,
   completed: false,
-  priority: prioritySelect.value
+  priority: prioritySelect.value,
+  dueDate: dueDateInput.value
 });
   
   taskInput.value = "";

@@ -39,7 +39,8 @@ addBtn.addEventListener("click", function () {
 
   tasks.push({
   text: taskText,
-  completed: false
+  completed: false,
+  priority: "Medium"
 });
   taskInput.value = "";
 

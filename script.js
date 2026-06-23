@@ -1,3 +1,4 @@
+const prioritySelect = document.getElementById("prioritySelect");
 const searchInput = document.getElementById("searchInput");
 const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
@@ -40,8 +41,9 @@ addBtn.addEventListener("click", function () {
   tasks.push({
   text: taskText,
   completed: false,
-  priority: "Medium"
+  priority: prioritySelect.value
 });
+  
   taskInput.value = "";
 
   saveTasks();
@@ -74,15 +76,19 @@ function renderTasks() {
     const li = document.createElement("li");
 
     li.innerHTML = `
-      <span class="${task.completed ? "completed" : ""}">
-        ${task.text}
-      </span>
+  <span class="${task.completed ? "completed" : ""}">
+    ${task.text}
+  </span>
 
-      <div>
-        <button onclick="toggleTask(${index})">✓</button>
-        <button onclick="deleteTask(${index})">X</button>
-      </div>
-    `;
+  <span class="priority ${task.priority.toLowerCase()}">
+    ${task.priority}
+  </span>
+
+  <div>
+    <button onclick="toggleTask(${index})">✓</button>
+    <button onclick="deleteTask(${index})">X</button>
+  </div>
+`;
 
     taskList.appendChild(li);
   });

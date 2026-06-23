@@ -8,7 +8,7 @@ const remainingTasksText = document.getElementById("remainingTasks");
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 renderTasks();
-  updateStats();
+
 
 function updateStats() {
 
@@ -58,6 +58,8 @@ function renderTasks() {
 
     taskList.appendChild(li);
   });
+
+  updateStats();
 }
 
 function deleteTask(index) {

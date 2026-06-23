@@ -21,7 +21,13 @@ tasks = tasks.map(task => {
       dueDate: ""
     };
   }
-  return task;
+
+  return {
+    text: task.text || "",
+    completed: task.completed || false,
+    priority: task.priority || "Medium",
+    dueDate: task.dueDate || ""
+  };
 });
 
 renderTasks();
@@ -69,9 +75,9 @@ function renderTasks() {
           ${task.text}
         </span>
 
-        <span class="priority ${task.priority.toLowerCase()}">
-          ${task.priority}
-        </span>
+        <span class="priority ${(task.priority || "Medium").toLowerCase()}">
+  {task.priority || "Medium"}
+</span>
 
         <p class="due-date">
           ${task.dueDate ? "Due: " + task.dueDate : "No due date"}

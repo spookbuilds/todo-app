@@ -76,7 +76,6 @@ function renderTasks() {
         </span>
 
         <span class="priority ${(task.priority || "Medium").toLowerCase()}">
-  {task.priority || "Medium"}
 </span>
 
         <p class="due-date">

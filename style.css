@@ -34,3 +34,8 @@ li {
   display: flex;
   justify-content: space-between;
 }
+
+.completed {
+    text-decoration: line-through;
+    opacity: 0.5;
+}

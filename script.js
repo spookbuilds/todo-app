@@ -19,11 +19,6 @@ tasks = tasks.map(task => {
 
 renderTasks();
 
-<p class="due-date">
-  Due: ${task.dueDate ? task.dueDate : "No date"}
-</p>
-
-
 function updateStats() {
 
   const total = tasks.length;
@@ -59,12 +54,6 @@ addBtn.addEventListener("click", function () {
 });
 
 searchInput.addEventListener("input", function () {
-  const query = searchInput.value.toLowerCase();
-
-  filteredTasks = tasks.filter(task =>
-    task.text.toLowerCase().includes(query)
-  );
-
   renderTasks();
 });
 
@@ -111,7 +100,9 @@ function deleteTask(index) {
 
   const taskToDelete = filteredTasks[index];
 
-  tasks = tasks.filter(task => task !== taskToDelete);
+  const realIndex = tasks.indexOf(taskToDelete);
+
+  tasks.splice(realIndex, 1);
 
   saveTasks();
   renderTasks();
@@ -126,7 +117,9 @@ function toggleTask(index) {
 
   const taskToToggle = filteredTasks[index];
 
-  taskToToggle.completed = !taskToToggle.completed;
+  const realIndex = tasks.indexOf(taskToToggle);
+
+  tasks[realIndex].completed = !tasks[realIndex].completed;
 
   saveTasks();
   renderTasks();

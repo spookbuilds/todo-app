@@ -8,8 +8,6 @@ const remainingTasksText = document.getElementById("remainingTasks");
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-let filteredTasks = tasks;
-
 tasks = tasks.map(task => {
   if (typeof task === "string") {
     return { text: task, completed: false };
@@ -46,6 +44,8 @@ addBtn.addEventListener("click", function () {
   taskInput.value = "";
 
   saveTasks();
+  taskInput.value = "";
+  searchInput.value = "";
   renderTasks();
 });
 
@@ -60,6 +60,13 @@ searchInput.addEventListener("input", function () {
 });
 
 function renderTasks() {
+
+  const query = searchInput.value.toLowerCase();
+
+  const filteredTasks = tasks.filter(task =>
+    task.text.toLowerCase().includes(query)
+  );
+
   taskList.innerHTML = "";
 
   filteredTasks.forEach((task, index) => {
@@ -83,26 +90,32 @@ function renderTasks() {
 }
 
 function deleteTask(index) {
-  const actualTask = filteredTasks[index];
+  const query = searchInput.value.toLowerCase();
 
-  tasks = tasks.filter(task => task !== actualTask);
+  const filteredTasks = tasks.filter(task =>
+    task.text.toLowerCase().includes(query)
+  );
+
+  const taskToDelete = filteredTasks[index];
+
+  tasks = tasks.filter(task => task !== taskToDelete);
 
   saveTasks();
-
-  filteredTasks = tasks;
-
   renderTasks();
 }
 
 function toggleTask(index) {
-  const actualTask = filteredTasks[index];
+  const query = searchInput.value.toLowerCase();
 
-  actualTask.completed = !actualTask.completed;
+  const filteredTasks = tasks.filter(task =>
+    task.text.toLowerCase().includes(query)
+  );
+
+  const taskToToggle = filteredTasks[index];
+
+  taskToToggle.completed = !taskToToggle.completed;
 
   saveTasks();
-
-  filteredTasks = tasks;
-
   renderTasks();
 }
 

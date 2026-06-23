@@ -39,3 +39,25 @@ li {
     text-decoration: line-through;
     opacity: 0.5;
 }
+
+.priority {
+  margin-left: 10px;
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 5px;
+}
+
+.priority.high {
+  background: #ff4d4d;
+  color: white;
+}
+
+.priority.medium {
+  background: #ffcc00;
+  color: black;
+}
+
+.priority.low {
+  background: #4caf50;
+  color: white;
+}

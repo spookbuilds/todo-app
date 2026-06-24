@@ -99,6 +99,7 @@ if (
       <div>
         <button onclick="toggleTask(${realIndex})">✓</button>
         <button onclick="deleteTask(${realIndex})">X</button>
+        <button onclick="editTask(${realIndex})">✏️</button>
       </div>
     `;
 
@@ -160,5 +161,21 @@ if (b.dueDate) return 1;
 return 0;
 
   });
+
+}
+
+function editTask(index) {
+
+  const newText = prompt(
+    "Edit task:",
+    tasks[index].text
+  );
+
+  if (newText === null) return;
+
+  tasks[index].text = newText;
+
+  saveTasks();
+  renderTasks();
 
 }

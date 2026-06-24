@@ -47,6 +47,7 @@ addBtn.addEventListener("click", function () {
   taskInput.value = "";
   dueDateInput.value = "";
 
+  sortTasks();
   saveTasks();
   renderTasks();
 });
@@ -66,6 +67,16 @@ function renderTasks() {
 
   filteredTasks.forEach((task) => {
     const realIndex = tasks.indexOf(task);
+
+    const today = new Date().toISOString().split("T")[0];
+
+if (
+  task.dueDate &&
+  task.dueDate < today &&
+  !task.completed
+) {
+  li.classList.add("overdue");
+}
 
     const li = document.createElement("li");
 
@@ -99,12 +110,14 @@ function renderTasks() {
 
 function toggleTask(index) {
   tasks[index].completed = !tasks[index].completed;
+  sortTasks();
   saveTasks();
   renderTasks();
 }
 
 function deleteTask(index) {
   tasks.splice(index, 1);
+  sortTasks();
   saveTasks();
   renderTasks();
 }
@@ -121,4 +134,31 @@ function updateStats() {
 
 function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function sortTasks() {
+
+  const priorityOrder = {
+    High: 1,
+    Medium: 2,
+    Low: 3
+  };
+
+  tasks.sort((a, b) => {
+
+    if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    }
+
+    if (a.dueDate && b.dueDate) {
+  return new Date(a.dueDate) - new Date(b.dueDate);
+}
+
+if (a.dueDate) return -1;
+if (b.dueDate) return 1;
+
+return 0;
+
+  });
+
 }
